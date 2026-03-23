@@ -1,5 +1,6 @@
 # ==========================================
 # AGRISENSE AFRICA - PROFESSIONAL AGRICULTURAL INTELLIGENCE PLATFORM
+# Version 2.0 - High Performance Agricultural Recommendation System
 # ==========================================
 
 import streamlit as st
@@ -18,67 +19,56 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ==========================================
-# CONFIGURAÇÃO GLOBAL
+# GLOBAL CONFIGURATION
 # ==========================================
 
-# Configuração da página
 st.set_page_config(
-    page_title="AgriSense Africa | Plataforma Agrícola Inteligente",
+    page_title="AgriSense Africa | Smart Agricultural Platform",
     page_icon="🌾",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
         'Get Help': None,
         'Report a bug': None,
-        'About': "AgriSense Africa - Plataforma Inteligente para Agricultura Sustentável"
+        'About': "AgriSense Africa - Smart Platform for Sustainable Agriculture"
     }
 )
 
-# Constantes
 class Config:
-    """Configurações globais da aplicação"""
+    """Global application configurations"""
     APP_NAME = "AgriSense Africa"
-    APP_VERSION = "1.0.0"
+    APP_VERSION = "2.0.0"
     COMPANY = "AgriSense Intelligence"
     
-    # Caminhos dos dados
     CLIMATE_FILE = "Dados_clima_2018_2023.csv"
     NDVI_FOLDER = "ndvi"
     HEADER_IMAGE = "WhatsApp Image 2026-02-17 at 11.37.47.jpeg"
     
-    # Limites para validação
     TEMP_MIN = -10
     TEMP_MAX = 50
     PRECIP_MAX = 500
     SOIL_MOISTURE_MAX = 0.6
     
-    # Nova paleta de cores profissional
-    PRIMARY_COLOR = "#1A4D3E"      # Verde musgo profundo
-    SECONDARY_COLOR = "#D9B48B"    # Bege terroso
-    ACCENT_COLOR = "#E67E22"       # Laranja terracota
-    DANGER_COLOR = "#C44536"       # Terracota queimado
-    SUCCESS_COLOR = "#2C7A47"      # Verde folha
-    WARNING_COLOR = "#E67E22"      # Laranja terracota
-    INFO_COLOR = "#3498DB"         # Azul suave
-    BACKGROUND_LIGHT = "#FDF8F0"   # Off-white cremoso
-    BACKGROUND_DARK = "#2C3E2F"    # Verde muito escuro
-    TEXT_DARK = "#2C3E2F"          # Cor de texto principal
-    TEXT_LIGHT = "#FDF8F0"         # Cor de texto claro
+    PRIMARY_COLOR = "#1A4D3E"
+    SECONDARY_COLOR = "#D9B48B"
+    ACCENT_COLOR = "#E67E22"
+    DANGER_COLOR = "#C44536"
+    SUCCESS_COLOR = "#2C7A47"
+    WARNING_COLOR = "#E67E22"
+    INFO_COLOR = "#3498DB"
+    BACKGROUND_LIGHT = "#FDF8F0"
+    BACKGROUND_DARK = "#2C3E2F"
+    TEXT_DARK = "#2C3E2F"
+    TEXT_LIGHT = "#FDF8F0"
     
-    # Gradientes
     GRADIENT_HEADER = f"linear-gradient(135deg, {PRIMARY_COLOR} 0%, {SUCCESS_COLOR} 100%)"
     GRADIENT_CARD = "linear-gradient(135deg, #FFFFFF 0%, #FDF8F0 100%)"
     GRADIENT_SOIL = f"linear-gradient(135deg, {PRIMARY_COLOR} 0%, {BACKGROUND_DARK} 100%)"
     
-    # Configurações de cache
     CACHE_TTL = 3600
 
-# ==========================================
-# ESTILOS CSS PROFISSIONAIS
-# ==========================================
-
 def inject_custom_css():
-    """Injeta estilos CSS personalizados"""
+    """Inject custom CSS styles"""
     st.markdown(f"""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -91,7 +81,6 @@ def inject_custom_css():
             background-color: {Config.BACKGROUND_LIGHT};
         }}
         
-        /* Header com imagem */
         .main-header {{
             background: {Config.GRADIENT_HEADER};
             padding: 1.5rem 2rem;
@@ -135,7 +124,6 @@ def inject_custom_css():
             margin-top: 0.25rem;
         }}
         
-        /* Cards de métricas */
         .metric-card {{
             background: {Config.GRADIENT_CARD};
             padding: 1.2rem;
@@ -150,7 +138,6 @@ def inject_custom_css():
             box-shadow: 0 8px 20px rgba(26, 77, 62, 0.1);
         }}
         
-        /* Cards de recomendação */
         .recommendation-card {{
             background: white;
             padding: 1.2rem;
@@ -172,7 +159,6 @@ def inject_custom_css():
         .crop-moderate {{ border-top-color: {Config.WARNING_COLOR}; }}
         .crop-low {{ border-top-color: {Config.DANGER_COLOR}; }}
         
-        /* Barra de progresso */
         .progress-container {{
             background: rgba(217, 180, 139, 0.2);
             border-radius: 8px;
@@ -188,7 +174,6 @@ def inject_custom_css():
             background: linear-gradient(90deg, {Config.SUCCESS_COLOR}, {Config.PRIMARY_COLOR});
         }}
         
-        /* Cards de solo */
         .soil-card {{
             background: {Config.GRADIENT_SOIL};
             padding: 1rem;
@@ -198,31 +183,6 @@ def inject_custom_css():
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }}
         
-        /* Boxes informativas */
-        .info-box, .success-box, .warning-box {{
-            padding: 1rem;
-            border-radius: 12px;
-            margin: 1rem 0;
-            border-left-width: 4px;
-            border-left-style: solid;
-        }}
-        
-        .info-box {{
-            background: rgba(52, 152, 219, 0.08);
-            border-left-color: {Config.INFO_COLOR};
-        }}
-        
-        .success-box {{
-            background: rgba(44, 122, 71, 0.08);
-            border-left-color: {Config.SUCCESS_COLOR};
-        }}
-        
-        .warning-box {{
-            background: rgba(230, 126, 34, 0.08);
-            border-left-color: {Config.WARNING_COLOR};
-        }}
-        
-        /* Footer */
         .footer {{
             text-align: center;
             padding: 2rem;
@@ -234,7 +194,6 @@ def inject_custom_css():
             color: {Config.TEXT_DARK};
         }}
         
-        /* Títulos */
         h1, h2, h3, h4 {{
             color: {Config.PRIMARY_COLOR};
             font-weight: 600;
@@ -247,13 +206,11 @@ def inject_custom_css():
             margin: 0;
         }}
         
-        /* Sidebar */
         [data-testid="stSidebar"] {{
             background-color: {Config.TEXT_LIGHT};
             border-right: 1px solid rgba(217, 180, 139, 0.2);
         }}
         
-        /* Botões */
         .stButton > button {{
             background: {Config.GRADIENT_HEADER};
             color: white;
@@ -269,7 +226,6 @@ def inject_custom_css():
             box-shadow: 0 4px 12px rgba(26, 77, 62, 0.3);
         }}
         
-        /* Scrollbar */
         ::-webkit-scrollbar {{
             width: 6px;
             height: 6px;
@@ -285,7 +241,6 @@ def inject_custom_css():
             border-radius: 4px;
         }}
         
-        /* Tabs */
         .stTabs [data-baseweb="tab-list"] {{
             gap: 4px;
         }}
@@ -303,16 +258,12 @@ def inject_custom_css():
     </style>
     """, unsafe_allow_html=True)
 
-# ==========================================
-# GERENCIAMENTO DE DADOS
-# ==========================================
-
 @st.cache_data(ttl=Config.CACHE_TTL, show_spinner=False)
 def load_climate_data() -> Optional[pd.DataFrame]:
-    """Carrega e processa dados climáticos"""
+    """Load and process climate data"""
     try:
         if not os.path.exists(Config.CLIMATE_FILE):
-            st.error(f"Arquivo {Config.CLIMATE_FILE} não encontrado")
+            st.error(f"File {Config.CLIMATE_FILE} not found")
             return None
         
         df = pd.read_csv(Config.CLIMATE_FILE)
@@ -320,12 +271,13 @@ def load_climate_data() -> Optional[pd.DataFrame]:
         required_cols = ['valid_time', 't2m', 'tp', 'u10', 'v10', 'ssrd', 'swvl1', 'swvl2']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
-            st.error(f"Colunas ausentes: {missing_cols}")
+            st.error(f"Missing columns: {missing_cols}")
             return None
         
         df['valid_time'] = pd.to_datetime(df['valid_time'])
         df['year'] = df['valid_time'].dt.year
         df['month'] = df['valid_time'].dt.month
+        df['day'] = df['valid_time'].dt.day
         df['month_name'] = df['month'].apply(lambda x: calendar.month_abbr[x])
         
         df['temp_c'] = df['t2m'] - 273.15
@@ -341,12 +293,12 @@ def load_climate_data() -> Optional[pd.DataFrame]:
         return df
         
     except Exception as e:
-        st.error(f"Erro ao carregar dados: {str(e)}")
+        st.error(f"Error loading data: {str(e)}")
         return None
 
 @st.cache_data(ttl=Config.CACHE_TTL, show_spinner=False)
 def load_ndvi_data(year: int, month: int) -> Optional[Dict[str, Any]]:
-    """Carrega dados NDVI"""
+    """Load NDVI data"""
     extensions = ['.tif', '.tiff', '.TIFF']
     name_formats = [f"NDVI_{year}_{month:02d}", f"ndvi_{year}_{month:02d}"]
     
@@ -382,142 +334,138 @@ def load_ndvi_data(year: int, month: int) -> Optional[Dict[str, Any]]:
                 'total_pixels': ndvi.size
             }
     except Exception as e:
-        st.warning(f"Erro ao ler NDVI: {str(e)}")
+        st.warning(f"Error reading NDVI: {str(e)}")
         return None
 
-# ==========================================
-# SISTEMA DE RECOMENDAÇÃO
-# ==========================================
-
 class CropRecommender:
-    """Sistema de recomendação de culturas"""
+    """Crop recommendation system"""
     
     CROPS_DATABASE = {
-        'Milho': {
+        'Corn': {
             'icon': '🌽',
             'temp_range': (20, 30),
             'precip_range': (80, 150),
             'soil_range': (0.20, 0.35),
             'optimal_months': [10, 11, 12],
-            'description': 'Cereal de alto valor nutritivo, boa para consumo e comercialização.',
+            'description': 'High nutritional value cereal, good for consumption and commercialization.',
             'planting_depth': '3-5 cm',
             'spacing': '80 x 40 cm',
-            'cycle': '90-120 dias',
+            'cycle': '90-120 days',
             'expected_yield': '3-5 ton/ha',
-            'water_requirement': 'Moderado',
-            'market_value': 'Alto'
+            'water_requirement': 'Moderate',
+            'market_value': 'High'
         },
-        'Arroz': {
+        'Rice': {
             'icon': '🌾',
             'temp_range': (22, 32),
             'precip_range': (150, 250),
             'soil_range': (0.30, 0.45),
             'optimal_months': [11, 12, 1, 2],
-            'description': 'Cereal básico, alta demanda no mercado.',
+            'description': 'Staple cereal, high market demand.',
             'planting_depth': '2-3 cm',
             'spacing': '25 x 25 cm',
-            'cycle': '120-150 dias',
+            'cycle': '120-150 days',
             'expected_yield': '4-6 ton/ha',
-            'water_requirement': 'Alto',
-            'market_value': 'Muito Alto'
+            'water_requirement': 'High',
+            'market_value': 'Very High'
         },
-        'Feijão Nhemba': {
+        'Cowpea': {
             'icon': '🫘',
             'temp_range': (20, 35),
             'precip_range': (60, 120),
             'soil_range': (0.15, 0.30),
             'optimal_months': [11, 12, 1],
-            'description': 'Leguminosa rica em proteína, fixa nitrogênio no solo.',
+            'description': 'Protein-rich legume, fixes nitrogen in the soil.',
             'planting_depth': '3-4 cm',
             'spacing': '50 x 20 cm',
-            'cycle': '70-90 dias',
+            'cycle': '70-90 days',
             'expected_yield': '1-2 ton/ha',
-            'water_requirement': 'Baixo',
-            'market_value': 'Alto'
+            'water_requirement': 'Low',
+            'market_value': 'High'
         },
-        'Mandioca': {
+        'Cassava': {
             'icon': '🌿',
             'temp_range': (18, 35),
             'precip_range': (100, 200),
             'soil_range': (0.15, 0.35),
             'optimal_months': [10, 11, 12, 1, 2],
-            'description': 'Raiz resistente à seca, segurança alimentar.',
+            'description': 'Drought-resistant root, food security crop.',
             'planting_depth': '5-8 cm',
             'spacing': '100 x 80 cm',
-            'cycle': '240-360 dias',
+            'cycle': '240-360 days',
             'expected_yield': '15-25 ton/ha',
-            'water_requirement': 'Baixo',
-            'market_value': 'Médio'
+            'water_requirement': 'Low',
+            'market_value': 'Medium'
         },
-        'Algodão': {
+        'Cotton': {
             'icon': '🧶',
             'temp_range': (20, 35),
             'precip_range': (70, 130),
             'soil_range': (0.20, 0.35),
             'optimal_months': [10, 11, 12],
-            'description': 'Cultura comercial de alta rentabilidade.',
+            'description': 'Commercial crop with high profitability.',
             'planting_depth': '2-3 cm',
             'spacing': '80 x 40 cm',
-            'cycle': '140-180 dias',
+            'cycle': '140-180 days',
             'expected_yield': '2-3 ton/ha',
-            'water_requirement': 'Moderado',
-            'market_value': 'Muito Alto'
+            'water_requirement': 'Moderate',
+            'market_value': 'Very High'
         },
-        'Amendoim': {
+        'Peanut': {
             'icon': '🥜',
             'temp_range': (22, 32),
             'precip_range': (80, 150),
             'soil_range': (0.15, 0.30),
             'optimal_months': [11, 12, 1],
-            'description': 'Leguminosa oleaginosa, boa para rotação.',
+            'description': 'Oilseed legume, good for crop rotation.',
             'planting_depth': '3-5 cm',
             'spacing': '60 x 20 cm',
-            'cycle': '100-120 dias',
+            'cycle': '100-120 days',
             'expected_yield': '1.5-2.5 ton/ha',
-            'water_requirement': 'Baixo',
-            'market_value': 'Alto'
+            'water_requirement': 'Low',
+            'market_value': 'High'
         },
-        'Batata Doce': {
+        'Sweet Potato': {
             'icon': '🍠',
             'temp_range': (18, 30),
             'precip_range': (70, 150),
             'soil_range': (0.15, 0.35),
             'optimal_months': [11, 12, 1, 2],
-            'description': 'Raiz nutritiva, boa para consumo e comercialização.',
+            'description': 'Nutritious root, good for consumption and commercialization.',
             'planting_depth': '3-5 cm',
             'spacing': '80 x 30 cm',
-            'cycle': '90-120 dias',
+            'cycle': '90-120 days',
             'expected_yield': '10-15 ton/ha',
-            'water_requirement': 'Moderado',
-            'market_value': 'Médio'
+            'water_requirement': 'Moderate',
+            'market_value': 'Medium'
         },
-        'Tomate': {
+        'Tomato': {
             'icon': '🍅',
             'temp_range': (18, 28),
             'precip_range': (80, 120),
             'soil_range': (0.25, 0.40),
             'optimal_months': [4, 5, 6, 7],
-            'description': 'Hortaliça de alta demanda, boa rentabilidade.',
+            'description': 'High demand vegetable, good profitability.',
             'planting_depth': '1-2 cm',
             'spacing': '100 x 50 cm',
-            'cycle': '90-120 dias',
+            'cycle': '90-120 days',
             'expected_yield': '40-60 ton/ha',
-            'water_requirement': 'Alto',
-            'market_value': 'Muito Alto'
+            'water_requirement': 'High',
+            'market_value': 'Very High'
         },
-        'Cebola': {
+        'Onion': {
             'icon': '🧅',
             'temp_range': (15, 28),
             'precip_range': (60, 100),
             'soil_range': (0.20, 0.35),
             'optimal_months': [5, 6, 7, 8],
-            'description': 'Hortaliça de alto valor comercial.',
+            'description': 'High commercial value vegetable.',
             'planting_depth': '1-2 cm',
             'spacing': '30 x 10 cm',
-            'cycle': '120-150 dias',
+            'cycle': '120-150 days',
             'expected_yield': '20-30 ton/ha',
-            'water_requirement': 'Moderado',
-            'market_value': 'Alto'
+            'water_requirement': 'Moderate',
+            'market_value': 'High'
         }
     }
     
@@ -537,91 +485,91 @@ class CropRecommender:
         temp_range = crop_params['temp_range']
         
         if temp_range[0] <= temp <= temp_range[1]:
-            return 30, f"Temperatura ideal: {temp:.1f}°C"
+            return 30, f"Ideal temperature: {temp:.1f}°C"
         elif temp < temp_range[0]:
             diff = temp_range[0] - temp
             score = max(0, 20 - diff * 1.5)
-            return score, f"Temperatura {temp:.1f}°C abaixo do ideal ({temp_range[0]}-{temp_range[1]}°C)"
+            return score, f"Temperature {temp:.1f}°C below ideal ({temp_range[0]}-{temp_range[1]}°C)"
         else:
             diff = temp - temp_range[1]
             score = max(0, 20 - diff * 1.2)
-            return score, f"Temperatura {temp:.1f}°C acima do ideal ({temp_range[0]}-{temp_range[1]}°C)"
+            return score, f"Temperature {temp:.1f}°C above ideal ({temp_range[0]}-{temp_range[1]}°C)"
     
     def _calculate_precipitation_score(self, crop_params: Dict) -> Tuple[float, str]:
         precip = self.conditions['precip']
         precip_range = crop_params['precip_range']
         
         if precip_range[0] <= precip <= precip_range[1]:
-            return 30, f"Precipitação ideal: {precip:.1f}mm"
+            return 30, f"Ideal precipitation: {precip:.1f}mm"
         elif precip < precip_range[0]:
             diff = precip_range[0] - precip
             score = max(0, 20 - diff / 5)
-            return score, f"Precipitação {precip:.1f}mm abaixo do necessário ({precip_range[0]}-{precip_range[1]}mm)"
+            return score, f"Precipitation {precip:.1f}mm below required ({precip_range[0]}-{precip_range[1]}mm)"
         else:
             diff = precip - precip_range[1]
             score = max(0, 20 - diff / 8)
-            return score, f"Precipitação {precip:.1f}mm acima do recomendado ({precip_range[0]}-{precip_range[1]}mm)"
+            return score, f"Precipitation {precip:.1f}mm above recommended ({precip_range[0]}-{precip_range[1]}mm)"
     
     def _calculate_soil_score(self, crop_params: Dict) -> Tuple[float, str]:
         soil = self.conditions['soil']
         soil_range = crop_params.get('soil_range', (0.15, 0.35))
         
         if soil is None:
-            return 0, "Dados de solo não disponíveis"
+            return 0, "Soil data not available"
         
         if soil_range[0] <= soil <= soil_range[1]:
-            return 20, f"Humidade do solo ideal: {soil:.2f}"
+            return 20, f"Ideal soil moisture: {soil:.2f}"
         elif soil < soil_range[0]:
             diff = soil_range[0] - soil
             score = max(0, 12 - diff * 40)
-            return score, f"Solo seco: {soil:.2f} (ideal >{soil_range[0]:.2f})"
+            return score, f"Dry soil: {soil:.2f} (ideal >{soil_range[0]:.2f})"
         else:
             diff = soil - soil_range[1]
             score = max(0, 12 - diff * 40)
-            return score, f"Solo encharcado: {soil:.2f} (ideal <{soil_range[1]:.2f})"
+            return score, f"Waterlogged soil: {soil:.2f} (ideal <{soil_range[1]:.2f})"
     
     def _calculate_ndvi_score(self) -> Tuple[float, str]:
         ndvi = self.conditions['ndvi']
         
         if ndvi is None:
-            return 0, "Dados NDVI não disponíveis"
+            return 0, "NDVI data not available"
         
         if ndvi >= 0.5:
-            return 15, f"NDVI excelente ({ndvi:.2f}) - Vegetação densa e saudável"
+            return 15, f"Excellent NDVI ({ndvi:.2f}) - Dense and healthy vegetation"
         elif ndvi >= 0.3:
-            return 12, f"NDVI bom ({ndvi:.2f}) - Boa cobertura vegetal"
+            return 12, f"Good NDVI ({ndvi:.2f}) - Good vegetation cover"
         elif ndvi >= 0.2:
-            return 8, f"NDVI moderado ({ndvi:.2f}) - Vegetação em desenvolvimento"
+            return 8, f"Moderate NDVI ({ndvi:.2f}) - Developing vegetation"
         elif ndvi >= 0.1:
-            return 4, f"NDVI baixo ({ndvi:.2f}) - Vegetação esparsa"
+            return 4, f"Low NDVI ({ndvi:.2f}) - Sparse vegetation"
         else:
-            return 2, f"NDVI muito baixo ({ndvi:.2f}) - Solo exposto"
+            return 2, f"Very low NDVI ({ndvi:.2f}) - Exposed soil"
     
     def _calculate_solar_score(self) -> Tuple[float, str]:
         solar = self.conditions['solar']
         
         if solar is None:
-            return 0, "Dados de radiação não disponíveis"
+            return 0, "Radiation data not available"
         
         if solar >= 20:
-            return 5, f"Radiação solar excelente: {solar:.1f} MJ/m²"
+            return 5, f"Excellent solar radiation: {solar:.1f} MJ/m²"
         elif solar >= 15:
-            return 4, f"Boa radiação solar: {solar:.1f} MJ/m²"
+            return 4, f"Good solar radiation: {solar:.1f} MJ/m²"
         elif solar >= 10:
-            return 2, f"Radiação moderada: {solar:.1f} MJ/m²"
+            return 2, f"Moderate radiation: {solar:.1f} MJ/m²"
         else:
-            return 1, f"Baixa radiação: {solar:.1f} MJ/m²"
+            return 1, f"Low radiation: {solar:.1f} MJ/m²"
     
     def _calculate_seasonal_score(self, crop_params: Dict) -> Tuple[float, str]:
         month = self.conditions['month']
         optimal_months = crop_params.get('optimal_months', [])
         
         if month in optimal_months:
-            return 10, f"Mês ideal para plantio ({calendar.month_name[month]})"
+            return 10, f"Ideal planting month ({calendar.month_name[month]})"
         elif optimal_months and abs(month - optimal_months[0]) <= 1:
-            return 5, f"Período próximo ao ideal ({calendar.month_name[month]})"
+            return 5, f"Near ideal period ({calendar.month_name[month]})"
         else:
-            return 0, f"Mês não ideal para plantio"
+            return 0, f"Non-ideal month for planting"
     
     def recommend_all(self) -> List[Dict[str, Any]]:
         results = []
@@ -638,16 +586,16 @@ class CropRecommender:
             
             if total_score >= 70:
                 suitability_class = "high"
-                suitability_text = "Alta"
-                recommendation_text = "Condições excelentes para esta cultura"
+                suitability_text = "High"
+                recommendation_text = "Excellent conditions for this crop"
             elif total_score >= 50:
                 suitability_class = "moderate"
-                suitability_text = "Moderada"
-                recommendation_text = "Condições adequadas, monitorar desenvolvimento"
+                suitability_text = "Moderate"
+                recommendation_text = "Adequate conditions, monitor development"
             else:
                 suitability_class = "low"
-                suitability_text = "Baixa"
-                recommendation_text = "Condições desfavoráveis, considere alternativas"
+                suitability_text = "Low"
+                recommendation_text = "Unfavorable conditions, consider alternatives"
             
             results.append({
                 'name': crop_name,
@@ -678,26 +626,21 @@ class CropRecommender:
         results.sort(key=lambda x: x['score'], reverse=True)
         return results
 
-# ==========================================
-# COMPONENTES DE VISUALIZAÇÃO
-# ==========================================
-
 class DashboardComponents:
-    """Componentes reutilizáveis do dashboard"""
+    """Reusable dashboard components"""
     
     @staticmethod
     def render_header():
-        """Renderiza o cabeçalho com imagem"""
-        # Verificar se a imagem existe
+        """Render header with image"""
         if os.path.exists(Config.HEADER_IMAGE):
             st.markdown(f"""
             <div class="main-header">
                 <img src="data:image/jpeg;base64,{DashboardComponents._get_image_base64(Config.HEADER_IMAGE)}" class="header-logo">
                 <div class="header-content">
                     <h1>AgriSense Africa</h1>
-                    <p>Plataforma Inteligente para Recomendação de Culturas</p>
+                    <p>Smart Platform for Crop Recommendation</p>
                     <div class="header-tagline">Turning Farm Data into Better Harvests</div>
-                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Versão {Config.APP_VERSION} | {Config.COMPANY}</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Version {Config.APP_VERSION} | {Config.COMPANY}</p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -706,29 +649,29 @@ class DashboardComponents:
             <div class="main-header">
                 <div class="header-content">
                     <h1>🌾 AgriSense Africa</h1>
-                    <p>Plataforma Inteligente para Recomendação de Culturas</p>
+                    <p>Smart Platform for Crop Recommendation</p>
                     <div class="header-tagline">Turning Farm Data into Better Harvests</div>
-                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Versão {Config.APP_VERSION} | {Config.COMPANY}</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Version {Config.APP_VERSION} | {Config.COMPANY}</p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
     
     @staticmethod
     def _get_image_base64(image_path):
-        """Converte imagem para base64"""
+        """Convert image to base64"""
         import base64
         with open(image_path, "rb") as img_file:
             return base64.b64encode(img_file.read()).decode()
     
     @staticmethod
     def render_metrics(data: pd.DataFrame):
-        """Renderiza métricas principais"""
+        """Render main metrics"""
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             st.metric(
-                label="Temperatura",
+                label="Temperature",
                 value=f"{data['temp_c'].mean():.1f}°C",
                 delta=f"{data['temp_c'].mean() - data['temp_c'].shift(12).mean():.1f}°C" if len(data) > 12 else None
             )
@@ -737,7 +680,7 @@ class DashboardComponents:
         with col2:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             st.metric(
-                label="Precipitação",
+                label="Precipitation",
                 value=f"{data['precip_mm'].mean():.1f} mm",
                 delta=None
             )
@@ -746,7 +689,7 @@ class DashboardComponents:
         with col3:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             st.metric(
-                label="Velocidade do Vento",
+                label="Wind Speed",
                 value=f"{data['wind_speed'].mean():.1f} m/s",
                 delta=None
             )
@@ -755,7 +698,7 @@ class DashboardComponents:
         with col4:
             st.markdown('<div class="metric-card">', unsafe_allow_html=True)
             st.metric(
-                label="Radiação Solar",
+                label="Solar Radiation",
                 value=f"{data['solar_mj'].mean():.1f} MJ/m²",
                 delta=None
             )
@@ -763,28 +706,28 @@ class DashboardComponents:
     
     @staticmethod
     def render_soil_analysis(data: pd.DataFrame):
-        """Renderiza análise de solo"""
-        st.markdown("### Análise da Umidade do Solo")
+        """Render soil analysis"""
+        st.markdown("### Soil Moisture Analysis")
         
         col1, col2 = st.columns(2)
         
         with col1:
             st.markdown(f"""
             <div class="soil-card">
-                <h4 style="color: white;">Camada Superficial</h4>
+                <h4 style="color: white;">Surface Layer</h4>
                 <div class="big-metric">{data['swvl1'].mean():.3f}</div>
                 <p>m³/m³ (0-7cm)</p>
-                <small>Umidade na camada superficial</small>
+                <small>Surface layer moisture</small>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
             st.markdown(f"""
             <div class="soil-card">
-                <h4 style="color: white;">Camada Profunda</h4>
+                <h4 style="color: white;">Deep Layer</h4>
                 <div class="big-metric">{data['swvl2'].mean():.3f}</div>
                 <p>m³/m³ (7-28cm)</p>
-                <small>Umidade na camada de raízes</small>
+                <small>Root zone moisture</small>
             </div>
             """, unsafe_allow_html=True)
         
@@ -792,17 +735,17 @@ class DashboardComponents:
         layer2 = data['swvl2'].mean()
         
         if layer2 > layer1:
-            st.success("Boa infiltração: Água penetrando nas camadas mais profundas")
+            st.success("Good infiltration: Water penetrating into deeper layers")
         elif layer1 > layer2 + 0.05:
-            st.warning("Drenagem comprometida: Água acumulada na superfície")
+            st.warning("Compromised drainage: Water accumulated on surface")
         else:
-            st.info("Perfil uniforme: Humidade equilibrada no perfil do solo")
+            st.info("Uniform profile: Balanced moisture throughout soil profile")
     
     @staticmethod
     def render_ndvi_analysis(ndvi_data: Optional[Dict], year: int, month: int):
-        """Renderiza análise NDVI"""
+        """Render NDVI analysis"""
         if ndvi_data is None:
-            st.warning("Dados NDVI não disponíveis para este período")
+            st.warning("NDVI data not available for this period")
             return
         
         col1, col2 = st.columns([1.5, 1])
@@ -811,36 +754,36 @@ class DashboardComponents:
             fig, ax = plt.subplots(figsize=(8, 6))
             im = ax.imshow(ndvi_data['data'], cmap='RdYlGn', vmin=-0.2, vmax=0.8)
             plt.colorbar(im, ax=ax, label='NDVI', fraction=0.046, pad=0.04)
-            ax.set_title(f'Índice de Vegetação NDVI\n{calendar.month_name[month]} {year}', 
+            ax.set_title(f'NDVI Vegetation Index\n{calendar.month_name[month]} {year}', 
                         fontsize=12, fontweight='bold', color=Config.TEXT_DARK)
             ax.axis('off')
             st.pyplot(fig)
         
         with col2:
-            st.markdown("### Estatísticas")
-            st.metric("Valor Médio", f"{ndvi_data['mean']:.4f}")
-            st.metric("Desvio Padrão", f"{ndvi_data['std']:.4f}")
-            st.metric("Mínimo", f"{ndvi_data['min']:.4f}")
-            st.metric("Máximo", f"{ndvi_data['max']:.4f}")
+            st.markdown("### Statistics")
+            st.metric("Mean Value", f"{ndvi_data['mean']:.4f}")
+            st.metric("Standard Deviation", f"{ndvi_data['std']:.4f}")
+            st.metric("Minimum", f"{ndvi_data['min']:.4f}")
+            st.metric("Maximum", f"{ndvi_data['max']:.4f}")
             
-            st.markdown("### Interpretação")
+            st.markdown("### Interpretation")
             if ndvi_data['mean'] < 0.1:
-                st.error("Vegetação muito escassa - Solo exposto. Necessário preparo e irrigação.")
+                st.error("Very sparse vegetation - Exposed soil. Preparation and irrigation needed.")
             elif ndvi_data['mean'] < 0.3:
-                st.warning("Vegetação esparsa - Condições regulares para cultivo.")
+                st.warning("Sparse vegetation - Regular conditions for cultivation.")
             elif ndvi_data['mean'] < 0.5:
-                st.success("Vegetação moderada - Boas condições para plantio.")
+                st.success("Moderate vegetation - Good conditions for planting.")
             else:
-                st.success("Vegetação densa e saudável - Condições excelentes.")
+                st.success("Dense and healthy vegetation - Excellent conditions.")
     
     @staticmethod
     def render_recommendations(recommendations: List[Dict]):
-        """Renderiza recomendações de culturas"""
+        """Render crop recommendations"""
         if not recommendations:
-            st.info("Analisando dados para gerar recomendações...")
+            st.info("Analyzing data to generate recommendations...")
             return
         
-        st.markdown("## Recomendações de Culturas")
+        st.markdown("## Crop Recommendations")
         
         top_crops = recommendations[:3]
         cols = st.columns(3)
@@ -856,83 +799,142 @@ class DashboardComponents:
                     <div class="progress-container">
                         <div class="progress-bar" style="width: {score_percent}%;"></div>
                     </div>
-                    <p><strong>Compatibilidade:</strong> {score_percent:.0f}%</p>
-                    <p><strong>Suitabilidade:</strong> {crop['suitability_text']}</p>
-                    <p><strong>Temperatura ideal:</strong> {crop['temp_ideal']}</p>
-                    <p><strong>Precipitação ideal:</strong> {crop['precip_ideal']}</p>
-                    <p><strong>Descrição:</strong> {crop['description']}</p>
-                    <p><strong>Necessidade de água:</strong> {crop['water_requirement']}</p>
-                    <p><strong>Valor de mercado:</strong> {crop['market_value']}</p>
+                    <p><strong>Compatibility:</strong> {score_percent:.0f}%</p>
+                    <p><strong>Suitability:</strong> {crop['suitability_text']}</p>
+                    <p><strong>Ideal temperature:</strong> {crop['temp_ideal']}</p>
+                    <p><strong>Ideal precipitation:</strong> {crop['precip_ideal']}</p>
+                    <p><strong>Description:</strong> {crop['description']}</p>
+                    <p><strong>Water requirement:</strong> {crop['water_requirement']}</p>
+                    <p><strong>Market value:</strong> {crop['market_value']}</p>
                 </div>
                 """, unsafe_allow_html=True)
         
-        with st.expander("Ver análise detalhada de todas as culturas"):
+        with st.expander("View detailed analysis of all crops"):
             for crop in recommendations:
                 score_percent = crop['score']
                 border_color = Config.SUCCESS_COLOR if crop['score'] >= 70 else Config.WARNING_COLOR if crop['score'] >= 50 else Config.DANGER_COLOR
                 st.markdown(f"""
                 <div style="padding: 1rem; margin: 0.5rem 0; border-left: 4px solid {border_color}; background: {Config.GRADIENT_CARD}; border-radius: 10px;">
-                    <h4>{crop['icon']} {crop['name']} - {score_percent:.0f}% compatível</h4>
+                    <h4>{crop['icon']} {crop['name']} - {score_percent:.0f}% compatible</h4>
                     <div class="progress-container">
                         <div class="progress-bar" style="width: {score_percent}%;"></div>
                     </div>
                     <p><strong>{crop['recommendation_text']}</strong></p>
                     <p>{crop['description']}</p>
                     <details>
-                        <summary>Detalhes técnicos</summary>
+                        <summary>Technical details</summary>
                         <ul>
-                            <li><strong>Plantio:</strong> Profundidade {crop['planting_depth']}, Espaçamento {crop['spacing']}</li>
-                            <li><strong>Ciclo:</strong> {crop['cycle']}</li>
-                            <li><strong>Produtividade esperada:</strong> {crop['expected_yield']}</li>
-                            <li><strong>Necessidade hídrica:</strong> {crop['water_requirement']}</li>
+                            <li><strong>Planting:</strong> Depth {crop['planting_depth']}, Spacing {crop['spacing']}</li>
+                            <li><strong>Cycle:</strong> {crop['cycle']}</li>
+                            <li><strong>Expected yield:</strong> {crop['expected_yield']}</li>
+                            <li><strong>Water requirement:</strong> {crop['water_requirement']}</li>
                         </ul>
                     </details>
                 </div>
                 """, unsafe_allow_html=True)
     
     @staticmethod
-    def render_management_tips(temperature: float, precipitation: float, 
-                                soil_moisture: float, ndvi: Optional[float]):
-        """Renderiza dicas de manejo"""
+    def render_management_tips(data: pd.DataFrame, ndvi: Optional[float]):
+        """Render management tips based on actual daily data"""
         tips = []
         
-        if precipitation < 40:
-            tips.append(("Seca severa", "Irrigação urgente necessária. Adie o plantio se não houver irrigação.", "warning"))
-        elif precipitation < 80:
-            tips.append(("Baixa precipitação", "Considere irrigação suplementar ou culturas tolerantes à seca.", "warning"))
-        elif precipitation > 200:
-            tips.append(("Chuvas excessivas", "Risco de erosão. Melhore a drenagem e evite culturas sensíveis.", "warning"))
+        # Calculate daily statistics for the period
+        daily_precip = data.groupby(data['valid_time'].dt.date)['precip_mm'].sum()
+        daily_temp_max = data.groupby(data['valid_time'].dt.date)['temp_c'].max()
+        daily_temp_min = data.groupby(data['valid_time'].dt.date)['temp_c'].min()
+        daily_soil = data.groupby(data['valid_time'].dt.date)['swvl1'].mean()
         
-        if soil_moisture < 0.15:
-            tips.append(("Solo seco", "Irrigue antes do plantio e aplique cobertura morta.", "warning"))
-        elif soil_moisture > 0.40:
-            tips.append(("Solo encharcado", "Aguarde a drenagem antes de plantar. Evite culturas sensíveis.", "warning"))
-        elif 0.20 <= soil_moisture <= 0.35:
-            tips.append(("Humidade ideal", "Condições ótimas para o desenvolvimento das culturas.", "success"))
+        # Precipitation analysis - count consecutive dry days
+        dry_days = (daily_precip < 1).astype(int)
+        consecutive_dry = 0
+        max_consecutive_dry = 0
+        for day in dry_days:
+            if day == 1:
+                consecutive_dry += 1
+                max_consecutive_dry = max(max_consecutive_dry, consecutive_dry)
+            else:
+                consecutive_dry = 0
         
-        if temperature < 18:
-            tips.append(("Temperaturas baixas", "Use variedades tolerantes ao frio ou aguarde o aquecimento.", "warning"))
-        elif temperature > 35:
-            tips.append(("Calor intenso", "Aumente a frequência de irrigação e use cobertura morta.", "warning"))
+        total_precip = daily_precip.sum()
+        rainy_days = (daily_precip > 1).sum()
         
-        if ndvi and ndvi < 0.2:
-            tips.append(("Solo exposto", "Considere adubação verde para melhorar a fertilidade do solo.", "info"))
+        if max_consecutive_dry >= 15:
+            tips.append(("Extended drought", f"{max_consecutive_dry} consecutive days without rain. Urgent irrigation needed.", "danger"))
+        elif max_consecutive_dry >= 10:
+            tips.append(("Prolonged dry spell", f"{max_consecutive_dry} days without rain. Monitor soil moisture.", "warning"))
+        elif total_precip < 30:
+            tips.append(("Low monthly rainfall", f"Only {total_precip:.1f}mm total. Consider irrigation or drought-tolerant crops.", "warning"))
+        elif total_precip > 200:
+            tips.append(("Excessive rainfall", f"{total_precip:.1f}mm total. Risk of waterlogging and erosion.", "warning"))
+        
+        # Temperature stress analysis
+        heat_stress_days = (daily_temp_max > 35).sum()
+        cold_stress_days = (daily_temp_min < 15).sum()
+        
+        if heat_stress_days > 5:
+            tips.append(("Heat stress", f"{heat_stress_days} days with temperatures above 35°C. Increase irrigation frequency.", "warning"))
+        elif cold_stress_days > 5:
+            tips.append(("Cold stress", f"{cold_stress_days} days with temperatures below 15°C. Protect young plants.", "warning"))
+        
+        # Soil moisture analysis
+        avg_soil = data['swvl1'].mean()
+        min_soil = data['swvl1'].min()
+        
+        if min_soil < 0.12:
+            tips.append(("Critical soil dryness", f"Minimum moisture {min_soil:.2f} m³/m³. Immediate irrigation required.", "danger"))
+        elif avg_soil < 0.18:
+            tips.append(("Dry soil conditions", f"Average moisture {avg_soil:.2f} m³/m³. Consider irrigation before planting.", "warning"))
+        elif avg_soil > 0.45:
+            tips.append(("Waterlogged soil", f"Average moisture {avg_soil:.2f} m³/m³. Improve drainage.", "warning"))
+        elif 0.20 <= avg_soil <= 0.35:
+            tips.append(("Ideal moisture", f"Average moisture {avg_soil:.2f} m³/m³. Optimal conditions.", "success"))
+        
+        # NDVI analysis
+        if ndvi is not None:
+            if ndvi < 0.15:
+                tips.append(("Poor vegetation cover", f"NDVI {ndvi:.2f}. Soil exposed. Use cover crops or mulch.", "warning"))
+            elif ndvi > 0.6:
+                tips.append(("Excellent vegetation", f"NDVI {ndvi:.2f}. Healthy crops, maintain current management.", "success"))
+        
+        # Wind analysis
+        avg_wind = data['wind_speed'].mean()
+        max_wind = data['wind_speed'].max()
+        
+        if max_wind > 15:
+            tips.append(("Strong winds", f"Maximum wind speed {max_wind:.1f} m/s. Risk of crop lodging.", "warning"))
+        elif avg_wind > 8:
+            tips.append(("Persistent winds", f"Average wind speed {avg_wind:.1f} m/s. Consider windbreaks.", "info"))
+        
+        # Solar radiation analysis
+        avg_solar = data['solar_mj'].mean()
+        
+        if avg_solar < 12:
+            tips.append(("Low solar radiation", f"Average {avg_solar:.1f} MJ/m². May affect crop growth.", "info"))
+        elif avg_solar > 22:
+            tips.append(("High solar radiation", f"Average {avg_solar:.1f} MJ/m². Risk of sunscald, provide shade for sensitive crops.", "warning"))
         
         if tips:
-            st.markdown("### Dicas de Manejo")
+            st.markdown("### Management Tips")
+            
+            # Sort tips by priority
+            priority_order = {"danger": 0, "warning": 1, "success": 2, "info": 3}
+            tips.sort(key=lambda x: priority_order.get(x[2], 4))
+            
             for title, message, tip_type in tips:
                 if tip_type == "success":
                     st.success(f"**{title}** - {message}")
+                elif tip_type == "danger":
+                    st.error(f"**{title}** - {message}")
                 elif tip_type == "warning":
                     st.warning(f"**{title}** - {message}")
                 else:
                     st.info(f"**{title}** - {message}")
         else:
-            st.success("Condições favoráveis para o plantio!")
+            st.success("Favorable conditions for planting! All parameters within optimal ranges.")
     
     @staticmethod
     def render_climate_dashboard(df: pd.DataFrame, year: int):
-        """Renderiza dashboard climático completo"""
+        """Render complete climate dashboard"""
         yearly_data = df[df['year'] == year]
         monthly_avg = yearly_data.groupby('month').agg({
             'temp_c': 'mean',
@@ -945,10 +947,10 @@ class DashboardComponents:
         fig = make_subplots(
             rows=2, cols=2,
             subplot_titles=(
-                'Temperatura Média Mensal',
-                'Precipitação Mensal',
-                'Umidade do Solo',
-                'Radiação Solar'
+                'Average Monthly Temperature',
+                'Monthly Precipitation',
+                'Soil Moisture',
+                'Solar Radiation'
             ),
             vertical_spacing=0.15,
             horizontal_spacing=0.12
@@ -959,7 +961,7 @@ class DashboardComponents:
                 x=monthly_avg['month'],
                 y=monthly_avg['temp_c'],
                 mode='lines+markers',
-                name='Temperatura',
+                name='Temperature',
                 line=dict(color=Config.ACCENT_COLOR, width=3),
                 marker=dict(size=8, color=Config.ACCENT_COLOR),
                 fill='tozeroy',
@@ -972,7 +974,7 @@ class DashboardComponents:
             go.Bar(
                 x=monthly_avg['month'],
                 y=monthly_avg['precip_mm'],
-                name='Precipitação',
+                name='Precipitation',
                 marker_color=Config.INFO_COLOR,
                 opacity=0.7
             ),
@@ -1007,7 +1009,7 @@ class DashboardComponents:
                 x=monthly_avg['month'],
                 y=monthly_avg['solar_mj'],
                 mode='lines+markers',
-                name='Radiação',
+                name='Radiation',
                 line=dict(color=Config.WARNING_COLOR, width=3),
                 marker=dict(size=8),
                 fill='tozeroy',
@@ -1016,28 +1018,28 @@ class DashboardComponents:
             row=2, col=2
         )
         
-        months_labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
         for row in [1, 2]:
             for col in [1, 2]:
                 fig.update_xaxes(
-                    title_text="Mês",
+                    title_text="Month",
                     tickmode='array',
                     tickvals=list(range(1, 13)),
                     ticktext=months_labels,
                     row=row, col=col
                 )
         
-        fig.update_yaxes(title_text="Temperatura (°C)", row=1, col=1)
-        fig.update_yaxes(title_text="Precipitação (mm)", row=1, col=2)
-        fig.update_yaxes(title_text="Umidade (m³/m³)", row=2, col=1)
-        fig.update_yaxes(title_text="Radiação (MJ/m²)", row=2, col=2)
+        fig.update_yaxes(title_text="Temperature (°C)", row=1, col=1)
+        fig.update_yaxes(title_text="Precipitation (mm)", row=1, col=2)
+        fig.update_yaxes(title_text="Moisture (m³/m³)", row=2, col=1)
+        fig.update_yaxes(title_text="Radiation (MJ/m²)", row=2, col=2)
         
         fig.update_layout(
             height=700,
             showlegend=True,
-            title_text=f"Análise Climática Completa - {year}",
+            title_text=f"Complete Climate Analysis - {year}",
             title_font_size=18,
             hovermode='x unified',
             template='plotly_white'
@@ -1045,53 +1047,49 @@ class DashboardComponents:
         
         st.plotly_chart(fig, use_container_width=True)
 
-# ==========================================
-# FUNÇÃO PRINCIPAL
-# ==========================================
-
 def main():
-    """Função principal da aplicação"""
+    """Main application function"""
     
     inject_custom_css()
     DashboardComponents.render_header()
     
-    with st.spinner("Carregando dados climáticos..."):
+    with st.spinner("Loading climate data..."):
         climate_data = load_climate_data()
     
     if climate_data is None:
-        st.error("Não foi possível carregar os dados. Verifique os arquivos.")
+        st.error("Unable to load data. Please check the files.")
         return
     
     with st.sidebar:
-        st.markdown("## Controles")
+        st.markdown("## Controls")
         st.markdown("---")
         
         years = sorted(climate_data['year'].unique())
         selected_year = st.selectbox(
-            "Ano",
+            "Year",
             years,
             index=len(years) - 1
         )
         
         selected_month = st.selectbox(
-            "Mês",
+            "Month",
             list(range(1, 13)),
             format_func=lambda x: calendar.month_name[x]
         )
         
         st.markdown("---")
-        st.markdown("### Sobre")
+        st.markdown("### About")
         st.info("""
-        **AgriSense Africa** é uma plataforma inteligente que utiliza:
-        - Dados climáticos históricos (2018-2023)
-        - Imagens de satélite NDVI
-        - Análise de humidade do solo em duas camadas
+        **AgriSense Africa** is a smart platform that uses:
+        - Historical climate data (2018-2023)
+        - NDVI satellite imagery
+        - Two-layer soil moisture analysis
         
-        As recomendações são geradas considerando 6 fatores simultaneamente.
+        Recommendations are generated considering 6 factors simultaneously.
         """)
         
         st.markdown("---")
-        st.markdown("### Culturas Analisadas")
+        st.markdown("### Analyzed Crops")
         crops_list = list(CropRecommender.CROPS_DATABASE.keys())
         st.write(", ".join(crops_list))
     
@@ -1101,10 +1099,10 @@ def main():
     ]
     
     if filtered_data.empty:
-        st.warning(f"Não há dados disponíveis para {calendar.month_name[selected_month]} de {selected_year}")
+        st.warning(f"No data available for {calendar.month_name[selected_month]} {selected_year}")
         return
     
-    with st.spinner("Carregando dados de satélite..."):
+    with st.spinner("Loading satellite data..."):
         ndvi_data = load_ndvi_data(selected_year, selected_month)
     
     temp = filtered_data['temp_c'].mean()
@@ -1116,22 +1114,24 @@ def main():
     recommender = CropRecommender(temp, precip, soil, solar, ndvi, selected_month)
     recommendations = recommender.recommend_all()
     
-    st.markdown(f"### Período: **{calendar.month_name[selected_month]} de {selected_year}**")
+    st.markdown(f"### Period: **{calendar.month_name[selected_month]} {selected_year}**")
     
     DashboardComponents.render_metrics(filtered_data)
     DashboardComponents.render_soil_analysis(filtered_data)
     
-    st.markdown("### Índice de Vegetação")
+    st.markdown("### Vegetation Index")
     DashboardComponents.render_ndvi_analysis(ndvi_data, selected_year, selected_month)
     
     st.markdown("---")
     DashboardComponents.render_recommendations(recommendations)
-    DashboardComponents.render_management_tips(temp, precip, soil, ndvi)
+    
+    # Pass the full daily data for management tips
+    DashboardComponents.render_management_tips(filtered_data, ndvi)
     
     st.markdown("---")
-    st.markdown("## Análises Complementares")
+    st.markdown("## Complementary Analysis")
     
-    tab1, tab2 = st.tabs(["Dashboard Climático", "Dados Mensais"])
+    tab1, tab2 = st.tabs(["Climate Dashboard", "Monthly Data"])
     
     with tab1:
         DashboardComponents.render_climate_dashboard(climate_data, selected_year)
@@ -1144,15 +1144,15 @@ def main():
             'swvl2': 'mean',
             'solar_mj': 'mean'
         }).round(2)
-        monthly_data.columns = ['Temperatura (°C)', 'Precipitação (mm)',
-                                'Umidade 0-7cm', 'Umidade 7-28cm', 'Radiação (MJ/m²)']
+        monthly_data.columns = ['Temperature (°C)', 'Precipitation (mm)',
+                                'Moisture 0-7cm', 'Moisture 7-28cm', 'Radiation (MJ/m²)']
         st.dataframe(monthly_data, use_container_width=True)
     
     st.markdown(f"""
     <div class="footer">
-        <p><strong>AgriSense Africa</strong> - Plataforma Inteligente para Agricultura Sustentável</p>
-        <p>Aumento estimado de produtividade: 20-30% com adoção das recomendações</p>
-        <p style="font-size: 0.75rem;">© 2026 {Config.COMPANY} | Versão {Config.APP_VERSION}</p>
+        <p><strong>AgriSense Africa</strong> - Smart Platform for Sustainable Agriculture</p>
+        <p>Estimated productivity increase: 20-30% with adoption of recommendations</p>
+        <p style="font-size: 0.75rem;">© 2026 {Config.COMPANY} | Version {Config.APP_VERSION}</p>
     </div>
     """, unsafe_allow_html=True)
 
