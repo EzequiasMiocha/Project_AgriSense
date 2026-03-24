@@ -1,5 +1,6 @@
 # ==========================================
 # AGRISENSE AFRICA - PROFESSIONAL AGRICULTURAL INTELLIGENCE PLATFORM
+# Version 6.0 - XGBOOST NDVI PREDICTION SYSTEM WITH CROP ENCYCLOPEDIA
 # ==========================================
 import streamlit as st
 import pandas as pd
@@ -36,7 +37,7 @@ st.set_page_config(
 class Config:
     """Global application configurations"""
     APP_NAME = "AgriSense Africa"
-    APP_VERSION = "1.0.0"
+    APP_VERSION = "6.0.0"
     COMPANY = "AgriSense Intelligence"
     COMPANY_DESCRIPTION = "Transformando dados em decisões agrícolas sustentáveis desde 2020"
     COMPANY_MISSION = "Empoderar agricultores africanos com tecnologia de ponta"
