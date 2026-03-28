@@ -1,6 +1,7 @@
 # ==========================================
 # AGRISENSE AFRICA - PROFESSIONAL AGRICULTURAL INTELLIGENCE PLATFORM
 # Version 8.0 - ENHANCED WITH DETAILED CROP DATABASE
+# LIGHT GREEN THEME WITH BLUE ACCENTS
 # ==========================================
 import streamlit as st
 import pandas as pd
@@ -27,7 +28,7 @@ import xgboost as xgb
 import seaborn as sns
 
 # ==========================================
-# GLOBAL CONFIGURATION
+# GLOBAL CONFIGURATION - LIGHT GREEN THEME
 # ==========================================
 st.set_page_config(
     page_title="AgriSense Africa | Intelligent Agricultural Platform",
@@ -37,7 +38,7 @@ st.set_page_config(
 )
 
 class Config:
-    """Global application configurations"""
+    """Global application configurations - Light Green Theme"""
     APP_NAME = "AgriSense Africa"
     APP_VERSION = "1.0.0"
     COMPANY = "AgriSense Intelligence"
@@ -55,62 +56,93 @@ class Config:
     TEMP_MAX = 50
     PRECIP_MAX = 500
     SOIL_MOISTURE_MAX = 0.6
-    PRIMARY_COLOR = "#1A4D3E"
-    SECONDARY_COLOR = "#D9B48B"
-    ACCENT_COLOR = "#E67E22"
+    # LIGHT GREEN THEME COLORS
+    PRIMARY_COLOR = "#2E7D32"      # Deep Forest Green
+    SECONDARY_COLOR = "#90EE90"    # Light Green
+    ACCENT_COLOR = "#2196F3"       # Professional Blue
     DANGER_COLOR = "#C44536"
-    SUCCESS_COLOR = "#2C7A47"
-    WARNING_COLOR = "#E67E22"
-    INFO_COLOR = "#3498DB"
-    BACKGROUND_LIGHT = "#FDF8F0"
-    BACKGROUND_DARK = "#2C3E2F"
+    SUCCESS_COLOR = "#4CAF50"      # Bright Green
+    WARNING_COLOR = "#FFC107"
+    INFO_COLOR = "#2196F3"          # Bright Blue
+    BACKGROUND_LIGHT = "#F0F9F0"   # Very Light Green Background
+    BACKGROUND_DARK = "#1B5E20"     # Dark Green
     CACHE_TTL = 3600
     FORECAST_START_YEAR = 2026
     FORECAST_END_YEAR = 2027
 
 def inject_custom_css():
-    """Inject professional custom CSS styles"""
+    """Inject professional custom CSS styles with Light Green & Blue theme"""
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     * { font-family: 'Inter', sans-serif; }
-    .stApp { background-color: #FDF8F0; }
+    
+    /* Main Background */
+    .stApp { 
+        background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E9 100%);
+    }
+    
+    /* Header Styles */
     .main-header {
-        background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         padding: 2rem;
         border-radius: 24px;
         margin-bottom: 2rem;
         box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         text-align: center;
     }
+    
     .header-content h1 {
         color: white;
         margin: 0;
         font-size: 2.5rem;
         font-weight: 700;
     }
+    
     .header-content p {
         color: rgba(255,255,255,0.9);
         margin: 0.5rem 0 0 0;
         font-size: 1.1rem;
     }
-    .header-tagline {
-        font-size: 0.95rem;
-        opacity: 0.9;
-        margin-top: 0.75rem;
-    }
+    
+    /* Metric Cards */
     .metric-card {
         background: white;
         padding: 1.5rem;
         border-radius: 20px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        border: 1px solid rgba(217, 180, 139, 0.3);
-        transition: transform 0.2s;
+        border: 1px solid rgba(46, 125, 50, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s;
     }
-    .metric-card:hover { transform: translateY(-2px); }
-    .metric-value { font-size: 2.2rem; font-weight: 700; color: #1A4D3E; }
-    .metric-label { font-size: 0.9rem; color: #666; margin-top: 0.25rem; font-weight: 600; }
-    .metric-interpretation { font-size: 0.8rem; color: #888; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #eee; }
+    
+    .metric-card:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(33, 150, 243, 0.15);
+        border-color: #2196F3;
+    }
+    
+    .metric-value { 
+        font-size: 2.2rem; 
+        font-weight: 700; 
+        color: #2E7D32;
+    }
+    
+    .metric-label { 
+        font-size: 0.9rem; 
+        color: #666; 
+        margin-top: 0.25rem; 
+        font-weight: 600;
+    }
+    
+    .metric-interpretation { 
+        font-size: 0.8rem; 
+        color: #888; 
+        margin-top: 0.75rem; 
+        padding-top: 0.75rem; 
+        border-top: 1px solid #E8F5E9;
+    }
+    
+    /* Recommendation Cards */
     .recommendation-card {
         background: white;
         padding: 1.5rem;
@@ -118,50 +150,74 @@ def inject_custom_css():
         margin: 1rem 0;
         box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         border-left: 5px solid;
+        transition: transform 0.2s;
     }
-    .crop-high { border-left-color: #2C7A47; }
-    .crop-moderate { border-left-color: #E67E22; }
+    
+    .recommendation-card:hover {
+        transform: translateX(4px);
+    }
+    
+    .crop-high { border-left-color: #4CAF50; }
+    .crop-moderate { border-left-color: #FFC107; }
     .crop-low { border-left-color: #C44536; }
+    
+    /* Progress Bar */
     .progress-container {
-        background: #E8F0EA;
+        background: #E8F5E9;
         border-radius: 12px;
         height: 10px;
         margin: 12px 0;
         overflow: hidden;
     }
+    
     .progress-bar {
         height: 100%;
         border-radius: 12px;
-        background: linear-gradient(90deg, #2C7A47, #1A4D3E);
+        background: linear-gradient(90deg, #66BB6A, #2E7D32);
     }
+    
+    /* Soil Card */
     .soil-card {
-        background: linear-gradient(135deg, #1A4D3E 0%, #2C3E2F 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
         padding: 1.5rem;
         border-radius: 20px;
         color: white;
         text-align: center;
+        transition: transform 0.2s;
     }
+    
+    .soil-card:hover {
+        transform: translateY(-2px);
+    }
+    
+    /* Statistics Panel */
     .statistics-panel {
         background: white;
         padding: 1.5rem;
         border-radius: 16px;
         margin: 1rem 0;
-        border: 1px solid #E8F0EA;
+        border: 1px solid #E8F5E9;
     }
+    
+    /* NDVI Interpretation - Blue Accent */
     .ndvi-interpretation {
         background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
         padding: 1.5rem;
         border-radius: 16px;
         margin-top: 1rem;
-        border-left: 5px solid #3498DB;
+        border-left: 5px solid #2196F3;
     }
+    
+    /* Sidebar Company Info */
     .sidebar-company {
-        background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         padding: 1.5rem;
         border-radius: 16px;
         color: white;
         margin-top: 1rem;
     }
+    
+    /* Footer */
     .footer {
         text-align: center;
         padding: 2.5rem;
@@ -169,32 +225,47 @@ def inject_custom_css():
         border-radius: 20px;
         margin-top: 2rem;
         font-size: 0.9rem;
+        border-top: 3px solid #2196F3;
     }
+    
+    /* Buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         color: white;
         border: none;
         border-radius: 12px;
         padding: 0.7rem 1.5rem;
         font-weight: 600;
-        transition: transform 0.2s;
+        transition: all 0.3s ease;
     }
-    .stButton > button:hover { transform: translateY(-2px); }
+    
+    .stButton > button:hover { 
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #2196F3 0%, #2E7D32 100%);
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    }
+    
+    /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         background: white;
         padding: 0.5rem;
         border-radius: 16px;
     }
+    
     .stTabs [data-baseweb="tab"] {
         border-radius: 12px;
         padding: 10px 24px;
         font-weight: 600;
+        transition: all 0.2s;
     }
+    
     .stTabs [aria-selected="true"] {
-        background-color: #1A4D3E;
+        background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         color: white;
     }
+    
+    /* Alerts */
     .alert-critical {
         background: linear-gradient(135deg, #C44536 0%, #E67E22 100%);
         padding: 1.2rem;
@@ -202,27 +273,32 @@ def inject_custom_css():
         color: white;
         margin: 0.75rem 0;
     }
+    
     .alert-warning {
-        background: linear-gradient(135deg, #E67E22 0%, #F39C12 100%);
+        background: linear-gradient(135deg, #FFC107 0%, #FFB74D 100%);
         padding: 1.2rem;
         border-radius: 12px;
-        color: white;
+        color: #2E2E2E;
         margin: 0.75rem 0;
     }
+    
     .alert-success {
-        background: linear-gradient(135deg, #2C7A47 0%, #52BE80 100%);
+        background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
         padding: 1.2rem;
         border-radius: 12px;
         color: white;
         margin: 0.75rem 0;
     }
+    
     .alert-info {
-        background: linear-gradient(135deg, #3498DB 0%, #5DADE2 100%);
+        background: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%);
         padding: 1.2rem;
         border-radius: 12px;
         color: white;
         margin: 0.75rem 0;
     }
+    
+    /* Crop Sidebar Buttons */
     .crop-sidebar-btn {
         width: 100%;
         text-align: left;
@@ -231,27 +307,36 @@ def inject_custom_css():
         border-radius: 12px;
         transition: all 0.2s;
         background: white;
-        border: 1px solid #E8F0EA;
+        border: 1px solid #E8F5E9;
         font-weight: 500;
     }
+    
     .crop-sidebar-btn:hover {
-        background: #F8F9FA;
-        border-color: #1A4D3E;
+        background: #F0F9F0;
+        border-color: #2E7D32;
         transform: translateX(4px);
     }
-    .crop-icon { font-size: 1.5rem; margin-right: 0.75rem; }
+    
+    .crop-icon { 
+        font-size: 1.5rem; 
+        margin-right: 0.75rem; 
+    }
+    
+    /* Crop Detail Page */
     .crop-detail-header {
-        background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         padding: 2.5rem;
         border-radius: 24px;
         color: white;
         margin-bottom: 2rem;
     }
+    
     .crop-detail-header h1 {
         color: white;
         margin: 0;
         font-size: 2.5rem;
     }
+    
     .crop-detail-section {
         background: white;
         padding: 2rem;
@@ -259,25 +344,35 @@ def inject_custom_css():
         margin: 1.5rem 0;
         box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
+    
     .crop-detail-section h3 {
-        color: #1A4D3E;
+        color: #2E7D32;
         margin-top: 0;
-        border-bottom: 3px solid #D9B48B;
+        border-bottom: 3px solid #2196F3;
         padding-bottom: 0.75rem;
         font-size: 1.4rem;
     }
+    
     .info-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1.25rem;
         margin: 1.25rem 0;
     }
+    
     .info-item {
         background: #F8F9FA;
         padding: 1.25rem;
         border-radius: 12px;
-        border-left: 4px solid #1A4D3E;
+        border-left: 4px solid #2E7D32;
+        transition: transform 0.2s;
     }
+    
+    .info-item:hover {
+        transform: translateX(4px);
+        border-left-color: #2196F3;
+    }
+    
     .info-label { 
         font-size: 0.8rem; 
         color: #666; 
@@ -285,28 +380,38 @@ def inject_custom_css():
         font-weight: 700;
         letter-spacing: 0.5px;
     }
+    
     .info-value { 
         font-size: 1.05rem; 
-        color: #1A4D3E; 
+        color: #2E7D32; 
         font-weight: 600; 
         margin-top: 0.4rem;
     }
+    
+    /* Tables */
     .nutrition-table {
         width: 100%;
         border-collapse: collapse;
         margin: 1.25rem 0;
     }
+    
     .nutrition-table th, .nutrition-table td {
         padding: 0.9rem 1rem;
         text-align: left;
-        border-bottom: 1px solid #E8F0EA;
+        border-bottom: 1px solid #E8F5E9;
     }
+    
     .nutrition-table th {
-        background: #1A4D3E;
+        background: #2E7D32;
         color: white;
         font-weight: 600;
     }
-    .nutrition-table tr:hover { background: #F8F9FA; }
+    
+    .nutrition-table tr:hover { 
+        background: #F8F9FA; 
+    }
+    
+    /* References Section - Blue Accent */
     .references-section {
         background: #F8F9FA;
         padding: 1.5rem;
@@ -314,23 +419,43 @@ def inject_custom_css():
         margin-top: 2rem;
         font-size: 0.9rem;
         color: #666;
-        border-top: 3px solid #D9B48B;
+        border-top: 3px solid #2196F3;
     }
+    
     .references-section strong {
-        color: #1A4D3E;
+        color: #2E7D32;
         display: block;
         margin-bottom: 0.75rem;
         font-size: 1rem;
     }
+    
+    /* Remove default padding */
+    .main .block-container {
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        max-width: 100% !important;
+    }
+    
+    header[data-testid="stHeader"] {
+        background: transparent;
+    }
+    
+    .stApp {
+        margin-top: 0px;
+    }
+    
     @media (max-width: 768px) {
         .info-grid { grid-template-columns: 1fr; }
         .header-content h1 { font-size: 2rem; }
+        .metric-value { font-size: 1.5rem; }
     }
     </style>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# COMPREHENSIVE CROPS DATABASE WITH DETAILED INFORMATION (ALL IN ENGLISH)
+# COMPREHENSIVE CROPS DATABASE WITH DETAILED INFORMATION
 # ==========================================
 CROPS_DATABASE = {
     'Maize': {
@@ -372,7 +497,7 @@ CROPS_DATABASE = {
     'Rice': {
         'icon': '🌾',
         'scientific_name': 'Oryza sativa L.',
-        'local_name': 'Mpunga(Changana)',
+        'local_name': 'Mpunga (Changana)',
         'family': 'Poaceae',
         'origin': 'Asia (O. sativa) / West Africa (O. glaberrima)',
         'distribution': 'Nigeria, Madagascar, Tanzania, Guinea. In Mozambique, mainly cultivated in Chokwe irrigation scheme.',
@@ -1095,7 +1220,7 @@ def analyze_vegetation_zones(ndvi_data: np.ndarray) -> Tuple[Dict[str, Dict], Di
         'low': {'range': (0.1, 0.2), 'color': '#E67E22', 'area_pct': 0, 'recommendations': []},
         'moderate': {'range': (0.2, 0.4), 'color': '#F39C12', 'area_pct': 0, 'recommendations': []},
         'good': {'range': (0.4, 0.6), 'color': '#52BE80', 'area_pct': 0, 'recommendations': []},
-        'excellent': {'range': (0.6, 1.0), 'color': '#1A4D3E', 'area_pct': 0, 'recommendations': []}
+        'excellent': {'range': (0.6, 1.0), 'color': '#2E7D32', 'area_pct': 0, 'recommendations': []}
     }
     
     total_pixels = ndvi_data.size
@@ -1442,7 +1567,7 @@ class RobustNDVIForecaster:
         # 1. Time series
         ax1 = axes[0, 0]
         ax1.plot(self.historical_data['date'], self.historical_data['ndvi_mean'], 
-                'b-', alpha=0.7, linewidth=1.5)
+                '#2E7D32', alpha=0.7, linewidth=1.5)
         ax1.set_title('NDVI Time Series (2018-2026)', fontsize=12, fontweight='bold')
         ax1.set_xlabel('Date')
         ax1.set_ylabel('NDVI')
@@ -1454,7 +1579,7 @@ class RobustNDVIForecaster:
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         ax2.errorbar(months, monthly_means['mean'], yerr=monthly_means['std'], 
                     fmt='o-', capsize=5, capthick=2, elinewidth=2, 
-                    color='green', linewidth=2, markersize=8)
+                    color='#66BB6A', linewidth=2, markersize=8)
         ax2.set_title('Seasonal NDVI Pattern', fontsize=12, fontweight='bold')
         ax2.set_xlabel('Month')
         ax2.set_ylabel('NDVI')
@@ -1475,8 +1600,8 @@ class RobustNDVIForecaster:
         
         # 4. Distribution
         ax4 = axes[1, 1]
-        ax4.hist(self.historical_data['ndvi_mean'], bins=30, color='green', alpha=0.7, edgecolor='black')
-        ax4.axvline(self.historical_data['ndvi_mean'].mean(), color='red', linestyle='--', 
+        ax4.hist(self.historical_data['ndvi_mean'], bins=30, color='#90EE90', alpha=0.7, edgecolor='#2E7D32')
+        ax4.axvline(self.historical_data['ndvi_mean'].mean(), color='#2196F3', linestyle='--', 
                    linewidth=2, label=f"Mean: {self.historical_data['ndvi_mean'].mean():.3f}")
         ax4.set_title('NDVI Distribution', fontsize=12, fontweight='bold')
         ax4.set_xlabel('NDVI')
@@ -2187,51 +2312,113 @@ class EnhancedDashboardComponents:
     """Advanced dashboard components"""
     @staticmethod
     def render_header():
-        """Render header with logo on the right side"""
-        # Create two columns
-        col1, col2 = st.columns([3.5, 1])
+        """Render header always at the very top of the page"""
+        
+        # Remove all default Streamlit padding and margins
+        st.markdown("""
+        <style>
+            /* Remove default padding from main container */
+            .main .block-container {
+                padding-top: 0rem !important;
+                padding-bottom: 0rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                max-width: 100% !important;
+            }
+            
+            /* Remove top margin from the app */
+            header[data-testid="stHeader"] {
+                background: transparent;
+            }
+            
+            /* Ensure no extra spacing */
+            .stApp {
+                margin-top: 0px;
+            }
+            
+            /* Remove spacing from the first element */
+            .stApp > div:first-child {
+                margin-top: 0px;
+            }
+            
+            /* Remove spacing from columns */
+            .stColumn {
+                margin-top: 0px !important;
+                padding-top: 0px !important;
+            }
+            
+            /* Remove gap between columns */
+            .row-widget.stColumns {
+                gap: 0rem;
+                margin-top: 0px;
+            }
+            
+            /* Ensure header sticks to top */
+            .header-container {
+                margin-top: 0px !important;
+                padding-top: 0px !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Create columns with no spacing
+        col1, col2 = st.columns([0.7, 5], gap="small")
         
         with col1:
-            st.markdown(f"""
-            <div class="main-header" style="background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%); padding: 1.5rem; border-radius: 24px;">
-                <div class="header-content">
-                    <h1 style="color: white; margin: 0;">AgriSense Africa</h1>
-                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Intelligent Agricultural Platform for Precision Farming</p>
-                    <div class="header-tagline" style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-top: 0.75rem;">
-                        Monthly Climate Data • Sentinel-2 NDVI Images • Forecasts 2026-2027
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            # Try to load the logo from multiple possible locations
-            logo_paths = ["logo.png"]
+            # Remove any margin from the column content
+            st.markdown("<div style='margin-top: 0px; padding-top: 0px;'>", unsafe_allow_html=True)
+            
+            # Try to load the logo
+            logo_paths = ["logo.png", "agrisense_logo.png", "img.jpeg", "images/logo.png", "AgriSense_logo.png"]
             logo_found = False
             
             for logo_path in logo_paths:
                 if os.path.exists(logo_path):
-                    st.image(logo_path, use_container_width=True)
+                    st.image(logo_path, width=125)
                     logo_found = True
                     break
             
             if not logo_found:
-                # Placeholder if logo not found
                 st.markdown("""
-                <div style="background: white; border-radius: 12px; padding: 0.5rem; text-align: center;">
-                    <p style="margin: 0; color: #1A4D3E; font-weight: bold;">AgriSense</p>
-                    <p style="margin: 0; font-size: 0.8rem;">Africa</p>
+                <div style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); 
+                            border-radius: 12px; 
+                            padding: 0.75rem; 
+                            text-align: center;
+                            margin-top: 0px;">
+                    <p style="font-size: 2rem; margin: 0;">🌾</p>
+                    <p style="margin: 0; font-weight: bold; color: #2E7D32;">AgriSense</p>
+                    <p style="margin: 0; font-size: 0.7rem; color: #4CAF50;">Africa</p>
                 </div>
                 """, unsafe_allow_html=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
         
-        # Add spacing after header
-        st.markdown("<br>", unsafe_allow_html=True)
+        with col2:
+            # Header with zero top margin - Light Green gradient with Blue accent
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
+                        border-radius: 20px;
+                        padding: 0.8rem 1.5rem;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                        margin-top: 0px;
+                        border-bottom: 3px solid #2196F3;">
+                <h1 style="color: white; margin: 0; font-size: 1.6rem; font-weight: 700;">
+                    🌾 AgriSense Africa
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.3rem 0 0 0; font-size: 0.85rem;">
+                    Turning Farm Data into better Harvests
+                </p>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.7rem; margin-top: 0.4rem; opacity: 0.85;">
+                    Monthly Climate Data • Sentinel-2 NDVI • Forecasts 2026-2027
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
         
     @staticmethod
     def render_project_info():
         """Render project information"""
         st.markdown("""
-        <div style="background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%); padding: 1.5rem; border-radius: 20px; color: white; margin-bottom: 1.5rem;">
+        <div style="background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%); padding: 1.5rem; border-radius: 20px; color: white; margin-bottom: 1.5rem;">
             <h3 style="margin: 0 0 0.5rem 0;">Our Mission</h3>
             <p style="margin: 0;">Help Mozambican farmers produce more food per hectare and reduce farming costs by using a single digital platform that turns farm and climate data into practical advice.</p>
         </div>
@@ -2273,7 +2460,7 @@ class EnhancedDashboardComponents:
             with st.expander("Stakeholders", expanded=True):
                 st.markdown("""
                 - **Owner:** AgriSense Africa project team
-                - **Core Team:** Francisco Macucule, Ezequias Miocha
+                - **Core Team:** Francisco Macucule, Ezequias
                 - **Key Users:** Smallholder farmers, Agricultural extension officers, Farmer associations and cooperatives
                 - **Region:** Chokwe, Gaza Province, Mozambique
                 """)
@@ -2491,7 +2678,6 @@ class EnhancedDashboardComponents:
     def render_robust_ndvi_forecast():
         """Render robust NDVI forecast dashboard with proper validation"""
         
-        #st.markdown("## 🌿 NDVI Forecast 2026-2027")
         st.markdown("**Based on 8+ years of historical NDVI data** (2018-2026)")
         st.markdown("---")
         
@@ -2528,7 +2714,7 @@ class EnhancedDashboardComponents:
         
         col1, col2 = st.columns(2)
         with col1:
-            max_horizon = st.slider("Maximum Forecast Horizon", 3,6,2,
+            max_horizon = st.slider("Maximum Forecast Horizon", 3, 6, 2,
                                    help="Longer horizons have higher uncertainty")
         
         with col2:
@@ -2593,12 +2779,12 @@ class EnhancedDashboardComponents:
                         two_years_ago = datetime.now().replace(year=datetime.now().year - 2)
                         historical_display = historical_data[historical_data['date'] >= two_years_ago]
                         ax.plot(historical_display['date'], historical_display['ndvi_mean'], 
-                               'b-', linewidth=2, label='Historical NDVI', alpha=0.8)
+                               '#2E7D32', linewidth=2, label='Historical NDVI', alpha=0.8)
                         
                         # Plot forecast
                         forecast_dates = [f['date'] for f in forecast_result['forecasts']]
                         forecast_values = [f['ndvi_predicted'] for f in forecast_result['forecasts']]
-                        ax.plot(forecast_dates, forecast_values, 'r--', linewidth=2, 
+                        ax.plot(forecast_dates, forecast_values, '#2196F3', linewidth=2, 
                                marker='o', markersize=6, label='Forecast')
                         
                         # Add confidence bands
@@ -2608,7 +2794,7 @@ class EnhancedDashboardComponents:
                         ax.fill_between(forecast_dates, 
                                        [v - std_dev for v in forecast_values],
                                        [v + std_dev for v in forecast_values],
-                                       alpha=0.2, color='red', label='Uncertainty Band')
+                                       alpha=0.2, color='#2196F3', label='Uncertainty Band')
                         
                         ax.set_xlabel('Date')
                         ax.set_ylabel('NDVI')
@@ -2834,9 +3020,9 @@ class EnhancedDashboardComponents:
         months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         fig = make_subplots(rows=2, cols=2, subplot_titles=('Monthly Average Temperature', 'Monthly Precipitation', 'Soil Moisture', 'Solar Radiation'))
         fig.add_trace(go.Scatter(x=months_labels, y=yearly_data['temp_c'], mode='lines+markers', name='Temperature', line=dict(color='#E67E22', width=3)), row=1, col=1)
-        fig.add_trace(go.Bar(x=months_labels, y=yearly_data['precip_mm'], name='Precipitation', marker_color='#3498DB'), row=1, col=2)
+        fig.add_trace(go.Bar(x=months_labels, y=yearly_data['precip_mm'], name='Precipitation', marker_color='#2196F3'), row=1, col=2)
         if 'swvl1' in yearly_data.columns:
-            fig.add_trace(go.Scatter(x=months_labels, y=yearly_data['swvl1'], mode='lines+markers', name='Moisture', line=dict(color='#2C7A47', width=3)), row=2, col=1)
+            fig.add_trace(go.Scatter(x=months_labels, y=yearly_data['swvl1'], mode='lines+markers', name='Moisture', line=dict(color='#2E7D32', width=3)), row=2, col=1)
         if 'solar_mj' in yearly_data.columns:
             fig.add_trace(go.Scatter(x=months_labels, y=yearly_data['solar_mj'], mode='lines+markers', name='Radiation', line=dict(color='#D9B48B', width=3)), row=2, col=2)
         fig.update_yaxes(title_text="°C", row=1, col=1)
@@ -2855,7 +3041,7 @@ class EnhancedDashboardComponents:
         st.markdown(f"### Projections for {year}")
         months_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         fig = make_subplots(rows=2, cols=2, subplot_titles=('Projected Temperature', 'Projected Precipitation', 'Projected Soil Moisture', 'Projected Solar Radiation'))
-        for var, color, title in [('temp_c', '#E67E22', 'Temperature'), ('precip_mm', '#3498DB', 'Precipitation'), ('swvl1', '#2C7A47', 'Moisture'), ('solar_mj', '#D9B48B', 'Radiation')]:
+        for var, color, title in [('temp_c', '#E67E22', 'Temperature'), ('precip_mm', '#2196F3', 'Precipitation'), ('swvl1', '#2E7D32', 'Moisture'), ('solar_mj', '#D9B48B', 'Radiation')]:
             if var in predictions:
                 var_data = predictions[var]
                 year_data = var_data[var_data['date'].dt.year == year]
@@ -2885,7 +3071,7 @@ class EnhancedDashboardComponents:
             calendar_data.append(row)
         cal_df = pd.DataFrame(calendar_data)
         fig = px.imshow(cal_df.set_index('Crop').values, x=months_abbr, y=cal_df['Crop'],
-                        color_continuous_scale=['#E8F0EA', '#F39C12', '#2C7A47'],
+                        color_continuous_scale=['#E8F5E9', '#FFC107', '#2E7D32'],
                         title='Ideal Planting Periods - Chokwe Region',
                         labels=dict(color='Suitability'))
         fig.update_layout(height=500)
