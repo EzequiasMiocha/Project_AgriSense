@@ -1,7 +1,7 @@
 # ==========================================
 # AGRISENSE AFRICA - PROFESSIONAL AGRICULTURAL INTELLIGENCE PLATFORM
 # Version 8.0 - ENHANCED WITH DETAILED CROP DATABASE
-# LIGHT GREEN THEME WITH BLUE ACCENTS
+# FIXED BLACK BACKGROUND - INDEPENDENT OF SYSTEM THEME
 # ==========================================
 import streamlit as st
 import pandas as pd
@@ -28,7 +28,7 @@ import xgboost as xgb
 import seaborn as sns
 
 # ==========================================
-# GLOBAL CONFIGURATION - LIGHT GREEN THEME
+# GLOBAL CONFIGURATION - FIXED BLACK BACKGROUND
 # ==========================================
 st.set_page_config(
     page_title="AgriSense Africa | Intelligent Agricultural Platform",
@@ -38,7 +38,7 @@ st.set_page_config(
 )
 
 class Config:
-    """Global application configurations - Light Green Theme"""
+    """Global application configurations - Fixed Black Background Theme"""
     APP_NAME = "AgriSense Africa"
     APP_VERSION = "1.0.0"
     COMPANY = "AgriSense Intelligence"
@@ -56,7 +56,7 @@ class Config:
     TEMP_MAX = 50
     PRECIP_MAX = 500
     SOIL_MOISTURE_MAX = 0.6
-    # LIGHT GREEN THEME COLORS
+    # PROFESSIONAL DARK THEME COLORS
     PRIMARY_COLOR = "#2E7D32"      # Deep Forest Green
     SECONDARY_COLOR = "#90EE90"    # Light Green
     ACCENT_COLOR = "#2196F3"       # Professional Blue
@@ -64,31 +64,53 @@ class Config:
     SUCCESS_COLOR = "#4CAF50"      # Bright Green
     WARNING_COLOR = "#FFC107"
     INFO_COLOR = "#2196F3"          # Bright Blue
-    BACKGROUND_LIGHT = "#F0F9F0"   # Very Light Green Background
-    BACKGROUND_DARK = "#1B5E20"     # Dark Green
+    BACKGROUND_DARK = "#0A0A0A"     # Professional Black Background
+    BACKGROUND_DARKER = "#000000"   # Pure Black
     CACHE_TTL = 3600
     FORECAST_START_YEAR = 2026
     FORECAST_END_YEAR = 2027
 
 def inject_custom_css():
-    """Inject professional custom CSS styles with Light Green & Blue theme"""
+    """Inject professional custom CSS styles with FIXED BLACK BACKGROUND"""
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     * { font-family: 'Inter', sans-serif; }
     
-    /* Main Background */
+    /* FORCE FIXED BLACK BACKGROUND - Independent of system theme */
     .stApp { 
-        background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E9 100%);
+        background: #0A0A0A !important;
+        background-color: #0A0A0A !important;
     }
     
-    /* Header Styles */
+    /* Main container background - FIXED BLACK */
+    .main .block-container {
+        background: #0A0A0A !important;
+        background-color: #0A0A0A !important;
+    }
+    
+    /* Override any Streamlit theme backgrounds */
+    .stApp > div {
+        background: #0A0A0A !important;
+    }
+    
+    /* Sidebar background - Dark gray for contrast */
+    section[data-testid="stSidebar"] {
+        background: #121212 !important;
+        background-color: #121212 !important;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown {
+        background: #121212 !important;
+    }
+    
+    /* Header Styles - Keep original gradient but on dark background */
     .main-header {
         background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
         padding: 2rem;
         border-radius: 24px;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         text-align: center;
     }
     
@@ -105,50 +127,50 @@ def inject_custom_css():
         font-size: 1.1rem;
     }
     
-    /* Metric Cards */
+    /* Metric Cards - White background for contrast on black */
     .metric-card {
-        background: white;
+        background: #1E1E1E;
         padding: 1.5rem;
         border-radius: 20px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        border: 1px solid rgba(46, 125, 50, 0.2);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        border: 1px solid rgba(46, 125, 50, 0.3);
         transition: transform 0.2s, box-shadow 0.2s;
     }
     
     .metric-card:hover { 
         transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(33, 150, 243, 0.15);
+        box-shadow: 0 4px 20px rgba(33, 150, 243, 0.2);
         border-color: #2196F3;
     }
     
     .metric-value { 
         font-size: 2.2rem; 
         font-weight: 700; 
-        color: #2E7D32;
+        color: #66BB6A;
     }
     
     .metric-label { 
         font-size: 0.9rem; 
-        color: #666; 
+        color: #CCCCCC; 
         margin-top: 0.25rem; 
         font-weight: 600;
     }
     
     .metric-interpretation { 
         font-size: 0.8rem; 
-        color: #888; 
+        color: #999999; 
         margin-top: 0.75rem; 
         padding-top: 0.75rem; 
-        border-top: 1px solid #E8F5E9;
+        border-top: 1px solid #333333;
     }
     
-    /* Recommendation Cards */
+    /* Recommendation Cards - Dark background with colored borders */
     .recommendation-card {
-        background: white;
+        background: #1E1E1E;
         padding: 1.5rem;
         border-radius: 20px;
         margin: 1rem 0;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3);
         border-left: 5px solid;
         transition: transform 0.2s;
     }
@@ -163,7 +185,7 @@ def inject_custom_css():
     
     /* Progress Bar */
     .progress-container {
-        background: #E8F5E9;
+        background: #333333;
         border-radius: 12px;
         height: 10px;
         margin: 12px 0;
@@ -192,16 +214,16 @@ def inject_custom_css():
     
     /* Statistics Panel */
     .statistics-panel {
-        background: white;
+        background: #1E1E1E;
         padding: 1.5rem;
         border-radius: 16px;
         margin: 1rem 0;
-        border: 1px solid #E8F5E9;
+        border: 1px solid #333333;
     }
     
     /* NDVI Interpretation - Blue Accent */
     .ndvi-interpretation {
-        background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
+        background: #1E1E1E;
         padding: 1.5rem;
         border-radius: 16px;
         margin-top: 1rem;
@@ -221,11 +243,12 @@ def inject_custom_css():
     .footer {
         text-align: center;
         padding: 2.5rem;
-        background: white;
+        background: #1E1E1E;
         border-radius: 20px;
         margin-top: 2rem;
         font-size: 0.9rem;
         border-top: 3px solid #2196F3;
+        color: #CCCCCC;
     }
     
     /* Buttons */
@@ -248,7 +271,7 @@ def inject_custom_css():
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: white;
+        background: #1E1E1E;
         padding: 0.5rem;
         border-radius: 16px;
     }
@@ -258,6 +281,7 @@ def inject_custom_css():
         padding: 10px 24px;
         font-weight: 600;
         transition: all 0.2s;
+        color: #CCCCCC;
     }
     
     .stTabs [aria-selected="true"] {
@@ -278,7 +302,7 @@ def inject_custom_css():
         background: linear-gradient(135deg, #FFC107 0%, #FFB74D 100%);
         padding: 1.2rem;
         border-radius: 12px;
-        color: #2E2E2E;
+        color: #1E1E1E;
         margin: 0.75rem 0;
     }
     
@@ -306,13 +330,14 @@ def inject_custom_css():
         padding: 0.9rem 1.2rem;
         border-radius: 12px;
         transition: all 0.2s;
-        background: white;
-        border: 1px solid #E8F5E9;
+        background: #1E1E1E;
+        border: 1px solid #333333;
         font-weight: 500;
+        color: #CCCCCC;
     }
     
     .crop-sidebar-btn:hover {
-        background: #F0F9F0;
+        background: #2A2A2A;
         border-color: #2E7D32;
         transform: translateX(4px);
     }
@@ -338,15 +363,15 @@ def inject_custom_css():
     }
     
     .crop-detail-section {
-        background: white;
+        background: #1E1E1E;
         padding: 2rem;
         border-radius: 20px;
         margin: 1.5rem 0;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     
     .crop-detail-section h3 {
-        color: #2E7D32;
+        color: #66BB6A;
         margin-top: 0;
         border-bottom: 3px solid #2196F3;
         padding-bottom: 0.75rem;
@@ -361,7 +386,7 @@ def inject_custom_css():
     }
     
     .info-item {
-        background: #F8F9FA;
+        background: #2A2A2A;
         padding: 1.25rem;
         border-radius: 12px;
         border-left: 4px solid #2E7D32;
@@ -375,7 +400,7 @@ def inject_custom_css():
     
     .info-label { 
         font-size: 0.8rem; 
-        color: #666; 
+        color: #999999; 
         text-transform: uppercase; 
         font-weight: 700;
         letter-spacing: 0.5px;
@@ -383,7 +408,7 @@ def inject_custom_css():
     
     .info-value { 
         font-size: 1.05rem; 
-        color: #2E7D32; 
+        color: #66BB6A; 
         font-weight: 600; 
         margin-top: 0.4rem;
     }
@@ -398,7 +423,7 @@ def inject_custom_css():
     .nutrition-table th, .nutrition-table td {
         padding: 0.9rem 1rem;
         text-align: left;
-        border-bottom: 1px solid #E8F5E9;
+        border-bottom: 1px solid #333333;
     }
     
     .nutrition-table th {
@@ -408,22 +433,22 @@ def inject_custom_css():
     }
     
     .nutrition-table tr:hover { 
-        background: #F8F9FA; 
+        background: #2A2A2A; 
     }
     
     /* References Section - Blue Accent */
     .references-section {
-        background: #F8F9FA;
+        background: #1E1E1E;
         padding: 1.5rem;
         border-radius: 12px;
         margin-top: 2rem;
         font-size: 0.9rem;
-        color: #666;
+        color: #999999;
         border-top: 3px solid #2196F3;
     }
     
     .references-section strong {
-        color: #2E7D32;
+        color: #66BB6A;
         display: block;
         margin-bottom: 0.75rem;
         font-size: 1rem;
@@ -446,6 +471,15 @@ def inject_custom_css():
         margin-top: 0px;
     }
     
+    /* Text color overrides for dark background */
+    p, li, .stMarkdown, .stText {
+        color: #CCCCCC !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #E0E0E0 !important;
+    }
+    
     @media (max-width: 768px) {
         .info-grid { grid-template-columns: 1fr; }
         .header-content h1 { font-size: 2rem; }
@@ -453,6 +487,7 @@ def inject_custom_css():
     }
     </style>
     """, unsafe_allow_html=True)
+
 
 # ==========================================
 # COMPREHENSIVE CROPS DATABASE WITH DETAILED INFORMATION
@@ -2362,7 +2397,7 @@ class EnhancedDashboardComponents:
         """, unsafe_allow_html=True)
         
         # Create columns with no spacing
-        col1, col2 = st.columns([0.7, 5], gap="small")
+        col1, col2 = st.columns([0.6, 5], gap="small")
         
         with col1:
             # Remove any margin from the column content
@@ -2457,13 +2492,7 @@ class EnhancedDashboardComponents:
                 Strong interest from extension services and development partners to expand the solution
                 """)
             
-            with st.expander("Stakeholders", expanded=True):
-                st.markdown("""
-                - **Owner:** AgriSense Africa project team
-                - **Core Team:** Francisco Macucule, Ezequias
-                - **Key Users:** Smallholder farmers, Agricultural extension officers, Farmer associations and cooperatives
-                - **Region:** Chokwe, Gaza Province, Mozambique
-                """)
+    
         
         with st.expander("Contact Information", expanded=False):
             st.markdown(f"""
