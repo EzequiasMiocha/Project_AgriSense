@@ -400,7 +400,7 @@ def slide_6_metrics():
         st.markdown("---")
         st.markdown("""
         <div style="background: linear-gradient(135deg, #1A4D3E 0%, #2C7A47 100%); padding: 1.5rem; border-radius: 12px; color: white; text-align: center;">
-            <h3 style="color: white;">📊 Validação Robusta</h3>
+            <h3 style="color: white;"> Validação Robusta</h3>
             <p>Treino: 2018-2023 (6 anos) | Teste: 2024-2026 (2 anos)</p>
             <p><small>Time series split - sem data leakage</small></p>
         </div>

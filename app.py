@@ -2468,6 +2468,7 @@ class EnhancedDashboardComponents:
                 **Strategic Relevance:** {Config.STRATEGIC_RELEVANCE}
                 """)
             
+        with col2:
             with st.expander("Key Objectives", expanded=True):
                 st.markdown("""
                 1. Build a digital platform combining satellite images, weather forecasts, soil information, and farmer field notes
@@ -2477,21 +2478,7 @@ class EnhancedDashboardComponents:
                 5. Ensure the system is simple, affordable, and usable in areas with limited internet access
                 """)
         
-        with col2:
-            with st.expander("Expected Outcomes", expanded=True):
-                st.markdown("""
-                **Farmers will receive timely and easy-to-understand advice on farming activities**
-                
-                The platform will help farmers:
-                - Use water and fertilizer more efficiently
-                - Reduce input costs
-                - Improve crop planning and timing
-                
-                **Pilot results should show 20-30% improvement in production per hectare**
-                
-                Strong interest from extension services and development partners to expand the solution
-                """)
-            
+               
     
         
         with st.expander("Contact Information", expanded=False):
